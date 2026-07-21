@@ -22,8 +22,25 @@ class EndpointValidatorTest {
     }
 
     @Test
+    fun preservesSecretPathAndRemovesTrailingSlash() {
+        assertEquals(
+            "https://server.example/private-route",
+            EndpointValidator.normalize("https://server.example/private-route/").getOrThrow()
+        )
+    }
+
+    @Test
+    fun preservesEncodedPathSegments() {
+        assertEquals(
+            "https://server.example/private%2Froute",
+            EndpointValidator.normalize("https://server.example/private%2Froute/").getOrThrow()
+        )
+    }
+
+    @Test
     fun rejectsCheckPath() {
         assertTrue(EndpointValidator.normalize("https://server.example/v2/check").isFailure)
+        assertTrue(EndpointValidator.normalize("https://server.example/private/v2/check/").isFailure)
     }
 
     @Test

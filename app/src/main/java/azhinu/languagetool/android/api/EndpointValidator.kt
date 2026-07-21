@@ -14,10 +14,12 @@ object EndpointValidator {
         require(!uri.host.isNullOrBlank()) { "Endpoint does not contain a server name" }
         require(uri.userInfo == null) { "Endpoint credentials are not supported" }
         require(uri.query == null && uri.fragment == null) { "Endpoint cannot contain a query or fragment" }
-        require(uri.path.isNullOrEmpty() || uri.path == "/") {
-            "Enter the server base URL without /v2/check"
+        val path = uri.rawPath.orEmpty().trimEnd('/')
+        require(!path.endsWith("/v2/check", ignoreCase = true)) {
+            "Enter the server endpoint without the final /v2/check path"
         }
 
-        URI(scheme, null, uri.host, uri.port, null, null, null).toASCIIString()
+        val origin = URI(scheme, null, uri.host, uri.port, null, null, null).toASCIIString()
+        URI("$origin$path").toASCIIString()
     }
 }

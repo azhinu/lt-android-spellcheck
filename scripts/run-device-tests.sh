@@ -10,8 +10,8 @@ if [ ! -f "$APP_APK" ] || [ ! -f "$TEST_APK" ]; then
   exit 1
 fi
 
-"$ADB_COMMAND" install -r "$APP_APK"
-"$ADB_COMMAND" install -r -t "$TEST_APK"
+"$ADB_COMMAND" install --no-incremental -r "$APP_APK"
+"$ADB_COMMAND" install --no-incremental -r -t "$TEST_APK"
 "$ADB_COMMAND" shell input keyevent KEYCODE_WAKEUP
 "$ADB_COMMAND" shell wm dismiss-keyguard
 set +e
@@ -39,4 +39,18 @@ case "$INSTRUMENT_OUTPUT" in
     ;;
 esac
 
-printf '%s\n' "Reboot the device before manually testing the system spell checker after APK replacement."
+printf '%s\n' "Rebooting the device to restore the system spell checker after APK replacement."
+"$ADB_COMMAND" reboot
+"$ADB_COMMAND" wait-for-device
+
+BOOT_ATTEMPTS=0
+while [ "$("$ADB_COMMAND" shell getprop sys.boot_completed | tr -d '\r')" != "1" ]; do
+  BOOT_ATTEMPTS=$((BOOT_ATTEMPTS + 1))
+  if [ "$BOOT_ATTEMPTS" -ge 120 ]; then
+    printf '%s\n' "Device did not finish booting after 120 seconds." >&2
+    exit 1
+  fi
+  sleep 1
+done
+
+printf '%s\n' "Device rebooted. Unlock it before manually testing the system spell checker."

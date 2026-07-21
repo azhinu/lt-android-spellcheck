@@ -40,6 +40,17 @@ class LanguageToolClientTest {
     }
 
     @Test
+    fun appendsCheckPathAfterSecretEndpointPath() {
+        server.enqueue(MockResponse().setResponseCode(200).setBody(LanguageToolProtocolTest.RESPONSE))
+        val settings = LanguageToolSettings(endpoint = server.url("/private-route/").toString())
+
+        LanguageToolClient().check("Helo world", settings)
+        val request = server.takeRequest(1, TimeUnit.SECONDS)!!
+
+        assertEquals("/private-route/v2/check", request.path)
+    }
+
+    @Test
     fun exposesHttpStatusAndErrorBody() {
         server.enqueue(MockResponse().setResponseCode(429).setBody("Rate limit exceeded"))
 

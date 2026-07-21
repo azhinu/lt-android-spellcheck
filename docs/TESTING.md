@@ -19,8 +19,8 @@ With a device connected through ADB, run the instrumented Compose UI suite:
 
 ## Automated coverage
 
-- Endpoint normalization and rejection of invalid schemes, credentials, queries,
-  fragments, paths, and empty values.
+- Endpoint normalization, secret path preservation, trailing-slash removal, and rejection of
+  invalid schemes, credentials, queries, fragments, explicit `/v2/check`, and empty values.
 - Successful HTTP responses, HTTP 429, malformed JSON, and timeouts.
 - LanguageTool request parameters and response parsing.
 - Case-insensitive spelling-only dictionary exclusions.
@@ -42,10 +42,12 @@ With a device connected through ADB, run the instrumented Compose UI suite:
 - The service is listed in Android's spell-checker settings with 33 subtypes.
 - The setup prompt disappears from the app after LanguageTool is selected.
 - Gboard underlines spelling, grammar, and punctuation errors and shows replacements.
-- Updating with `adb install -r` preserves the endpoint, language settings, and dictionary.
+- Updating with `adb install --no-incremental -r` preserves the endpoint, language settings, and dictionary.
 
 Android can retain a dead service binding after replacing an APK. If the service is
-selected but Gboard shows no underlines, reboot the device before testing again.
+selected but Gboard shows no underlines, reboot the device before testing again. The
+device test script performs this reboot automatically because Android 16 can retain a
+dead spell checker Binder connection after replacing the APK.
 
 Spell checking is triggered by real editor input. Programmatic whole-field replacement,
 including automation APIs equivalent to `setText`, does not have to create Android spell-check
