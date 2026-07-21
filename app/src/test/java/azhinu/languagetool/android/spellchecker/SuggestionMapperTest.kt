@@ -45,6 +45,15 @@ class SuggestionMapperTest {
     }
 
     @Test
+    fun declaresEveryReturnedSuggestionAttributeAsSupported() {
+        val supported = SuggestionMapper.supportedAttributes
+
+        assertTrue(supported and SuggestionsInfo.RESULT_ATTR_LOOKS_LIKE_TYPO != 0)
+        assertTrue(supported and SuggestionsInfo.RESULT_ATTR_LOOKS_LIKE_GRAMMAR_ERROR != 0)
+        assertTrue(supported and SuggestionsInfo.RESULT_ATTR_HAS_RECOMMENDED_SUGGESTIONS != 0)
+    }
+
+    @Test
     fun createsSafeEmptySentence() {
         val sentence = SuggestionMapper.toSentenceSuggestions(emptyList(), textInfo, 5)
         assertEquals(1, sentence.suggestionsCount)

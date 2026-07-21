@@ -7,6 +7,11 @@ import android.view.textservice.TextInfo
 import azhinu.languagetool.android.model.LanguageToolMatch
 
 object SuggestionMapper {
+    val supportedAttributes: Int =
+        SuggestionsInfo.RESULT_ATTR_LOOKS_LIKE_TYPO or
+            SuggestionsInfo.RESULT_ATTR_LOOKS_LIKE_GRAMMAR_ERROR or
+            SuggestionsInfo.RESULT_ATTR_HAS_RECOMMENDED_SUGGESTIONS
+
     fun toSentenceSuggestions(
         matches: List<LanguageToolMatch>,
         textInfo: TextInfo,

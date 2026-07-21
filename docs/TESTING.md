@@ -47,6 +47,14 @@ With a device connected through ADB, run the instrumented Compose UI suite:
 Android can retain a dead service binding after replacing an APK. If the service is
 selected but Gboard shows no underlines, reboot the device before testing again.
 
+Spell checking is triggered by real editor input. Programmatic whole-field replacement,
+including automation APIs equivalent to `setText`, does not have to create Android spell-check
+spans and is not a valid system integration test.
+
+The correction popup belongs to the application that owns the text field. LanguageTool supplies
+suggestions and result attributes, but the host application or Android `TextView` implementation
+controls popup colors, typography, and action buttons.
+
 ### Endpoint and diagnostics
 
 - **Save** validates the URL, performs a real request, and saves only on success.

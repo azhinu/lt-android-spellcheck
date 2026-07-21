@@ -14,9 +14,17 @@ fi
 "$ADB_COMMAND" install -r -t "$TEST_APK"
 "$ADB_COMMAND" shell input keyevent KEYCODE_WAKEUP
 "$ADB_COMMAND" shell wm dismiss-keyguard
+set +e
 INSTRUMENT_OUTPUT=$("$ADB_COMMAND" shell am instrument -w \
   azhinu.languagetool.android.test/androidx.test.runner.AndroidJUnitRunner)
+INSTRUMENT_STATUS=$?
+set -e
 printf '%s\n' "$INSTRUMENT_OUTPUT"
+
+if [ "$INSTRUMENT_STATUS" -ne 0 ]; then
+  printf '%s\n' "Instrumented test runner failed." >&2
+  exit "$INSTRUMENT_STATUS"
+fi
 
 case "$INSTRUMENT_OUTPUT" in
   *"FAILURES!!!"*)
@@ -30,3 +38,5 @@ case "$INSTRUMENT_OUTPUT" in
     exit 1
     ;;
 esac
+
+printf '%s\n' "Reboot the device before manually testing the system spell checker after APK replacement."

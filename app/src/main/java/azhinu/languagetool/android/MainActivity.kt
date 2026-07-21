@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -68,6 +69,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -210,63 +212,69 @@ private fun LanguageToolApp(openSpellCheckerSettings: () -> Unit) {
 
     Scaffold(
         topBar = {
-            LargeTopAppBar(
-                title = {
-                    Column {
-                        Text(screen.title, fontWeight = FontWeight.SemiBold)
-                        Text(
-                            "LanguageTool · Android",
-                            style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+            val title: @Composable () -> Unit = {
+                Column(modifier = Modifier.testTag("app_bar_title")) {
+                    Text(screen.title, fontWeight = FontWeight.SemiBold)
+                    Text(
+                        "LanguageTool · Android",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+            val dictionaryActions: @Composable RowScope.() -> Unit = {
+                Box {
+                    IconButton(
+                        onClick = { dictionaryMenuExpanded = true },
+                        modifier = Modifier.testTag("dictionary_actions")
+                    ) {
+                        Icon(Icons.Rounded.MoreVert, contentDescription = "Dictionary actions")
+                    }
+                    DropdownMenu(
+                        expanded = dictionaryMenuExpanded,
+                        onDismissRequest = { dictionaryMenuExpanded = false }
+                    ) {
+                        DropdownMenuItem(
+                            text = { Text("Import") },
+                            leadingIcon = { Icon(Icons.Rounded.Download, null) },
+                            onClick = {
+                                dictionaryMenuExpanded = false
+                                importLauncher.launch(arrayOf("text/plain", "text/*"))
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text("Export") },
+                            leadingIcon = { Icon(Icons.Rounded.Upload, null) },
+                            enabled = settings.dictionary.isNotEmpty(),
+                            onClick = {
+                                dictionaryMenuExpanded = false
+                                exportLauncher.launch("languagetool-dictionary.txt")
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text("Clear dictionary") },
+                            leadingIcon = { Icon(Icons.Rounded.Delete, null) },
+                            enabled = settings.dictionary.isNotEmpty(),
+                            onClick = {
+                                dictionaryMenuExpanded = false
+                                systemDictionary.removeWords(settings.dictionary)
+                                update(settings.copy(dictionary = emptySet()))
+                                dictionaryStatus = OperationStatus("Dictionary cleared", true)
+                            }
                         )
                     }
-                },
-                actions = {
-                    if (screen == AppScreen.DICTIONARY) {
-                        Box {
-                            IconButton(
-                                onClick = { dictionaryMenuExpanded = true },
-                                modifier = Modifier.testTag("dictionary_actions")
-                            ) {
-                                Icon(Icons.Rounded.MoreVert, contentDescription = "Dictionary actions")
-                            }
-                            DropdownMenu(
-                                expanded = dictionaryMenuExpanded,
-                                onDismissRequest = { dictionaryMenuExpanded = false }
-                            ) {
-                                DropdownMenuItem(
-                                    text = { Text("Import") },
-                                    leadingIcon = { Icon(Icons.Rounded.Download, null) },
-                                    onClick = {
-                                        dictionaryMenuExpanded = false
-                                        importLauncher.launch(arrayOf("text/plain", "text/*"))
-                                    }
-                                )
-                                DropdownMenuItem(
-                                    text = { Text("Export") },
-                                    leadingIcon = { Icon(Icons.Rounded.Upload, null) },
-                                    enabled = settings.dictionary.isNotEmpty(),
-                                    onClick = {
-                                        dictionaryMenuExpanded = false
-                                        exportLauncher.launch("languagetool-dictionary.txt")
-                                    }
-                                )
-                                DropdownMenuItem(
-                                    text = { Text("Clear dictionary") },
-                                    leadingIcon = { Icon(Icons.Rounded.Delete, null) },
-                                    enabled = settings.dictionary.isNotEmpty(),
-                                    onClick = {
-                                        dictionaryMenuExpanded = false
-                                        systemDictionary.removeWords(settings.dictionary)
-                                        update(settings.copy(dictionary = emptySet()))
-                                        dictionaryStatus = OperationStatus("Dictionary cleared", true)
-                                    }
-                                )
-                            }
-                        }
-                    }
                 }
-            )
+            }
+            if (screen == AppScreen.DICTIONARY) {
+                TopAppBar(
+                    title = title,
+                    actions = dictionaryActions
+                )
+            } else {
+                LargeTopAppBar(
+                    title = title
+                )
+            }
         },
         bottomBar = {
             NavigationBar {

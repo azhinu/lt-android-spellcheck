@@ -1,7 +1,10 @@
 package azhinu.languagetool.android
 
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertAny
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -9,6 +12,8 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlin.math.abs
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -37,7 +42,7 @@ class MainActivityTest {
         composeRule.onNodeWithTag("preferred_languages").performScrollTo().performClick()
         composeRule.onNodeWithTag("preferred_language_search").performTextInput("russ")
 
-        composeRule.onNodeWithText("Russian").assertIsDisplayed()
+        composeRule.onAllNodesWithText("Russian").assertAny(hasText("Russian"))
         composeRule.onNodeWithText("German").assertDoesNotExist()
     }
 
@@ -52,6 +57,18 @@ class MainActivityTest {
         composeRule.onNodeWithText("Import").assertIsDisplayed()
         composeRule.onNodeWithText("Export").assertIsDisplayed()
         composeRule.onNodeWithText("Clear dictionary").assertIsDisplayed()
+    }
+
+    @Test
+    fun dictionaryTitleAndActionsShareTheSameVerticalCenter() {
+        composeRule.onNodeWithText("Dictionary").performClick()
+
+        val titleCenter = composeRule.onNodeWithTag("app_bar_title")
+            .fetchSemanticsNode().boundsInRoot.center.y
+        val actionsCenter = composeRule.onNodeWithTag("dictionary_actions")
+            .fetchSemanticsNode().boundsInRoot.center.y
+
+        assertTrue(abs(titleCenter - actionsCenter) < 1f)
     }
 
     @Test

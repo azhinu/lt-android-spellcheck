@@ -21,16 +21,26 @@ class LanguageToolSpellCheckerService : SpellCheckerService() {
             RuntimeLog.info("System spell checker session created", locale)
         }
 
+        override fun getSupportedAttributes(): Int = SuggestionMapper.supportedAttributes
+
         override fun onGetSentenceSuggestionsMultiple(
             textInfos: Array<out TextInfo>,
             suggestionsLimit: Int
-        ): Array<SentenceSuggestionsInfo> = textInfos.map { textInfo ->
-            getSentenceSuggestions(textInfo, suggestionsLimit)
-        }.toTypedArray()
+        ): Array<SentenceSuggestionsInfo> {
+            RuntimeLog.debug(
+                "System sentence check requested",
+                "${textInfos.size} texts, limit $suggestionsLimit"
+            )
+            return textInfos.map { textInfo ->
+                getSentenceSuggestions(textInfo, suggestionsLimit)
+            }.toTypedArray()
+        }
 
         @Deprecated("Android uses the sentence API starting with API 16")
-        override fun onGetSuggestions(textInfo: TextInfo, suggestionsLimit: Int): SuggestionsInfo =
-            getSentenceSuggestions(textInfo, suggestionsLimit).getSuggestionsInfoAt(0)
+        override fun onGetSuggestions(textInfo: TextInfo, suggestionsLimit: Int): SuggestionsInfo {
+            RuntimeLog.debug("System word check requested", "Limit $suggestionsLimit")
+            return getSentenceSuggestions(textInfo, suggestionsLimit).getSuggestionsInfoAt(0)
+        }
 
         @Deprecated("Android uses the sentence API starting with API 16")
         override fun onGetSuggestionsMultiple(
