@@ -12,8 +12,8 @@ android {
         applicationId = "azhinu.languagetool.android"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1
-        versionName = "0.1.0"
+        versionCode = providers.environmentVariable("APP_VERSION_CODE").orNull?.toInt() ?: 1
+        versionName = providers.environmentVariable("APP_VERSION_NAME").orNull ?: "0.1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
