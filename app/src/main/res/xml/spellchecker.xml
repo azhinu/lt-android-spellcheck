@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<spell-checker xmlns:android="http://schemas.android.com/apk/res/android"
+    android:label="@string/app_name"
+    android:settingsActivity="azhinu.languagetool.android.MainActivity">
+    <subtype android:label="@string/asturian" android:subtypeLocale="ast" />
+    <subtype android:label="@string/breton" android:subtypeLocale="br" />
+    <subtype android:label="@string/catalan" android:subtypeLocale="ca" />
+    <subtype android:label="@string/danish" android:subtypeLocale="da" />
+    <subtype android:label="@string/german" android:subtypeLocale="de" />
+    <subtype android:label="@string/english" android:subtypeLocale="en" />
+    <subtype android:label="@string/spanish" android:subtypeLocale="es" />
+    <subtype android:label="@string/esperanto" android:subtypeLocale="eo" />
+    <subtype android:label="@string/french" android:subtypeLocale="fr" />
+    <subtype android:label="@string/irish" android:subtypeLocale="ga" />
+    <subtype android:label="@string/galician" android:subtypeLocale="gl" />
+    <subtype android:label="@string/italian" android:subtypeLocale="it" />
+    <subtype android:label="@string/dutch" android:subtypeLocale="nl" />
+    <subtype android:label="@string/norwegian" android:subtypeLocale="no" />
+    <subtype android:label="@string/norwegian_bokmal" android:subtypeLocale="nb" />
+    <subtype android:label="@string/polish" android:subtypeLocale="pl" />
+    <subtype android:label="@string/portuguese" android:subtypeLocale="pt" />
+    <subtype android:label="@string/romanian" android:subtypeLocale="ro" />
+    <subtype android:label="@string/slovenian" android:subtypeLocale="sl" />
+    <subtype android:label="@string/slovak" android:subtypeLocale="sk" />
+    <subtype android:label="@string/swedish" android:subtypeLocale="sv" />
+    <subtype android:label="@string/tagalog" android:subtypeLocale="tl" />
+    <subtype android:label="@string/ukrainian" android:subtypeLocale="uk" />
+    <subtype android:label="@string/greek" android:subtypeLocale="el" />
+    <subtype android:label="@string/belarusian" android:subtypeLocale="be" />
+    <subtype android:label="@string/crimean_tatar" android:subtypeLocale="crh" />
+    <subtype android:label="@string/russian" android:subtypeLocale="ru" />
+    <subtype android:label="@string/arabic" android:subtypeLocale="ar" />
+    <subtype android:label="@string/persian" android:subtypeLocale="fa" />
+    <subtype android:label="@string/tamil" android:subtypeLocale="ta" />
+    <subtype android:label="@string/khmer" android:subtypeLocale="km" />
+    <subtype android:label="@string/chinese" android:subtypeLocale="zh" />
+    <subtype android:label="@string/japanese" android:subtypeLocale="ja" />
+</spell-checker>

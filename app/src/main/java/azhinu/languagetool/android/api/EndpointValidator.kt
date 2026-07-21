@@ -1,0 +1,23 @@
+package azhinu.languagetool.android.api
+
+import java.net.URI
+
+object EndpointValidator {
+    fun normalize(value: String): Result<String> = runCatching {
+        val input = value.trim()
+        require(input.isNotEmpty()) { "Endpoint cannot be empty" }
+        require(input.length <= 2048) { "Endpoint is too long" }
+
+        val uri = URI(input)
+        val scheme = uri.scheme?.lowercase()
+        require(scheme == "http" || scheme == "https") { "Only HTTP and HTTPS are allowed" }
+        require(!uri.host.isNullOrBlank()) { "Endpoint does not contain a server name" }
+        require(uri.userInfo == null) { "Endpoint credentials are not supported" }
+        require(uri.query == null && uri.fragment == null) { "Endpoint cannot contain a query or fragment" }
+        require(uri.path.isNullOrEmpty() || uri.path == "/") {
+            "Enter the server base URL without /v2/check"
+        }
+
+        URI(scheme, null, uri.host, uri.port, null, null, null).toASCIIString()
+    }
+}

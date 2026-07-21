@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">LanguageTool for Android</string>
+    <string name="asturian">Asturian</string>
+    <string name="breton">Breton</string>
+    <string name="catalan">Catalan</string>
+    <string name="danish">Danish</string>
+    <string name="german">German</string>
+    <string name="english">English</string>
+    <string name="spanish">Spanish</string>
+    <string name="esperanto">Esperanto</string>
+    <string name="french">French</string>
+    <string name="irish">Irish</string>
+    <string name="galician">Galician</string>
+    <string name="italian">Italian</string>
+    <string name="dutch">Dutch</string>
+    <string name="norwegian">Norwegian</string>
+    <string name="norwegian_bokmal">Norwegian Bokmål</string>
+    <string name="polish">Polish</string>
+    <string name="portuguese">Portuguese</string>
+    <string name="romanian">Romanian</string>
+    <string name="slovenian">Slovenian</string>
+    <string name="slovak">Slovak</string>
+    <string name="swedish">Swedish</string>
+    <string name="tagalog">Tagalog</string>
+    <string name="ukrainian">Ukrainian</string>
+    <string name="greek">Greek</string>
+    <string name="belarusian">Belarusian</string>
+    <string name="crimean_tatar">Crimean Tatar</string>
+    <string name="russian">Russian</string>
+    <string name="arabic">Arabic</string>
+    <string name="persian">Persian</string>
+    <string name="tamil">Tamil</string>
+    <string name="khmer">Khmer</string>
+    <string name="chinese">Chinese</string>
+    <string name="japanese">Japanese</string>
+</resources>
